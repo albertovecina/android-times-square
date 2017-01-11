@@ -392,6 +392,11 @@ public class CalendarPickerView extends ListView {
       return withHighlightedDates(Collections.singletonList(date));
     }
 
+    public FluentInitializer withMonthNameFormat(String pattern) {
+      monthNameFormat(pattern);
+      return this;
+    }
+
     @SuppressLint("SimpleDateFormat")
     public FluentInitializer setShortWeekdays(String[] newShortWeekdays) {
       DateFormatSymbols symbols = new DateFormatSymbols(locale);
@@ -769,6 +774,15 @@ public class CalendarPickerView extends ListView {
       }
     }
 
+    validateAndUpdate();
+  }
+
+  public void monthNameFormat(String pattern) {
+    monthNameFormat = new SimpleDateFormat(pattern, locale);
+    monthNameFormat.setTimeZone(timeZone);
+    for (MonthDescriptor month : months) {
+      month.setLabel(monthNameFormat.format(month.getDate()));
+    }
     validateAndUpdate();
   }
 
