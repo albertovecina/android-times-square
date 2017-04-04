@@ -397,6 +397,11 @@ public class CalendarPickerView extends ListView {
       return this;
     }
 
+    public FluentInitializer withChineseMonthNameFormat() {
+      chineseMonthName();
+      return this;
+    }
+
     @SuppressLint("SimpleDateFormat")
     public FluentInitializer setShortWeekdays(String[] newShortWeekdays) {
       DateFormatSymbols symbols = new DateFormatSymbols(locale);
@@ -781,6 +786,30 @@ public class CalendarPickerView extends ListView {
     monthNameFormat = new SimpleDateFormat(pattern, locale);
     monthNameFormat.setTimeZone(timeZone);
     for (MonthDescriptor month : months) {
+      month.setLabel(monthNameFormat.format(month.getDate()));
+    }
+    validateAndUpdate();
+  }
+
+  public void chineseMonthName() {
+    List<String> chineseMonthNameFormat = new ArrayList<String>() {{
+      add("yyyy'一月'");
+      add("yyyy'二月'");
+      add("yyyy'三月'");
+      add("yyyy'四月'");
+      add("yyyy'五月'");
+      add("yyyy'六月'");
+      add("yyyy'七月'");
+      add("yyyy'八月'");
+      add("yyyy'九月'");
+      add("yyyy'十月'");
+      add("yyyy'十一月'");
+      add("yyyy'十二月'");
+    }};
+    for (int i = 0; i < months.size(); i++) {
+      MonthDescriptor month = months.get(i);
+      monthNameFormat = new SimpleDateFormat(chineseMonthNameFormat.get(month.getMonth()), locale);
+      monthNameFormat.setTimeZone(timeZone);
       month.setLabel(monthNameFormat.format(month.getDate()));
     }
     validateAndUpdate();
